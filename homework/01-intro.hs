@@ -43,7 +43,7 @@ hanoi n a b c = hanoi (n-1) a c b ++ [(a,b)] ++ hanoi (n-1) c b a
  - https://en.wikipedia.org/wiki/Tower_of_Hanoi#Frame.E2.80.93Stewart_algorithm
  - http://stackoverflow.com/a/3615658/3169491
  -
- - NOTE: not correct -}
+ - NOTE: not correct. Not sure how to cast type properly. -}
 hanoi' :: Integer -> [Peg] -> [Move]
 hanoi' 0 _ = []
 hanoi' n [p1, p2, p3] = hanoi n p1 p2 p3
