@@ -3,3 +3,6 @@ Learning Haskell by following the course at [CIS194](http://www.seas.upenn.edu/%
 I'm running my code in a Docker container with `docker run -it --rm -v ${PWD}:/data/ haskell:8`.
 From the GHCi I load and compile files with `:l /data/homework/01-intro.hs`
 
+If you don't want to use GHCi for everything, you can start the container with a bash prompt,
+`docker run -it --rm -v ${PWD}:/data/ haskell:8 bash`.
+
