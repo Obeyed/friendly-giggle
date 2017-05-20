@@ -59,6 +59,34 @@ inOrder :: MessageTree -> [LogMessage]
 inOrder Leaf          = []
 inOrder (Node l lm r) = inOrder l ++ [lm] ++ inOrder r
 
+-- Exercise 5
+-- test it in GHCi with
+--    testWhatWentWrong parse whatWentWrong "error.log"
+whatWentWrong :: [LogMessage] -> [String]
+whatWentWrong [] = []
+whatWentWrong lms = (getCriticalErrors . inOrder . build) lms
+  where
+    getCriticalErrors [] = []
+    getCriticalErrors ((LogMessage (Error lvl) _ msg):ls) =
+      if lvl > 50
+      then [msg] ++ getCriticalErrors ls
+      else [] ++ getCriticalErrors ls
+    getCriticalErrors (_:ls) = getCriticalErrors ls
+
+
+{- Final output was:
+ - [
+ - "Mustardwatch opened, please close for proper functioning!",
+ - "All backup mustardwatches are busy",
+ - "Depletion of mustard stores detected!",
+ - "Hard drive failure: insufficient mustard",
+ - "Twenty seconds remaining until out-of-mustard condition",
+ - "Ten seconds remaining until out-of-mustard condition",
+ - "Empty mustard reservoir! Attempting to recover...",
+ - "Recovery failed! Initiating shutdown sequence"
+ - ]
+ - }
+
 
 
 {--------------------
