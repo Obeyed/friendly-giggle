@@ -53,6 +53,12 @@ build :: [LogMessage] -> MessageTree
 build [] = Leaf
 build (lm:lms) = insert lm $ build lms
 
+-- Exercise 4
+-- https://en.wikipedia.org/wiki/Binary_search_tree#Traversal
+inOrder :: MessageTree -> [LogMessage]
+inOrder Leaf          = []
+inOrder (Node l lm r) = inOrder l ++ [lm] ++ inOrder r
+
 
 
 {--------------------
