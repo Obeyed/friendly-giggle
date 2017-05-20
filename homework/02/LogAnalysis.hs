@@ -7,7 +7,10 @@ import Log
 
 -- Exercise 1
 
---parse :: String -> [LogMessage]
+-- test this in GHCi with
+--    testParse parse 10 "error.log"
+parse :: String -> [LogMessage]
+parse xs = map parseMessage $ lines xs
 
 
 -- Third attempt
