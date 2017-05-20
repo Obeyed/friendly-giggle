@@ -12,7 +12,6 @@ import Log
 parse :: String -> [LogMessage]
 parse xs = map parseMessage $ lines xs
 
-
 -- Third attempt
 -- avoid parenthesis by using the (.) and ($) operators
 parseMessage :: String -> LogMessage
@@ -31,6 +30,26 @@ parseMessage ('E':xs) = LogMessage (Error lvl) ts msg
         ws  = words xs
 parseMessage xs = Unknown xs
 
+-- Exercise 2
+-- https://en.wikipedia.org/wiki/Binary_search_tree#Insertion
+insert :: LogMessage -> MessageTree -> MessageTree
+insert (Unknown _) mt = mt
+insert lm Leaf = Node Leaf lm Leaf
+insert lma@(LogMessage _ tsa _) (Node left lmb@(LogMessage _ tsb _) right )
+  | tsa == tsb = Node (Node left lmb Leaf) lma right
+  | tsa < tsb = Node (insert lma left) lmb right
+  | tsa > tsb = Node left lmb (insert lma right)
+
+
+
+
+
+
+{--------------------
+ --------------------
+ - Initial attempts -
+ --------------------
+ --------------------}
 
 -- Second attempt with only Prelude functions
 -- However, no dot operator
