@@ -40,8 +40,10 @@ insert lma@(LogMessage _ tsa _) (Node left lmb@(LogMessage _ tsb _) right )
   | tsa < tsb = Node (insert lma left) lmb right
   | tsa > tsb = Node left lmb (insert lma right)
 
-
-
+-- Exercise 3
+build :: [LogMessage] -> MessageTree
+build [] = Leaf
+build (lm:lms) = insert lm $ build lms
 
 
 
