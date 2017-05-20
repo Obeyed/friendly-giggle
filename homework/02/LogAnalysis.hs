@@ -35,10 +35,18 @@ parseMessage xs = Unknown xs
 insert :: LogMessage -> MessageTree -> MessageTree
 insert (Unknown _) mt = mt
 insert lm Leaf = Node Leaf lm Leaf
-insert lma@(LogMessage _ tsa _) (Node left lmb@(LogMessage _ tsb _) right )
-  | tsa == tsb = Node (Node left lmb Leaf) lma right
-  | tsa < tsb = Node (insert lma left) lmb right
-  | tsa > tsb = Node left lmb (insert lma right)
+insert lm (Node left lm' right)
+  | tsa == tsb = Node (Node left lm' Leaf) lm right
+  | tsa < tsb = Node (insert lm left) lm' right
+  | tsa > tsb = Node left lm' (insert lm right)
+  where
+    tsa = getLogMessageTimestamp lm
+    tsb = getLogMessageTimestamp lm'
+insert _ _ = error "Something was not right"
+
+getLogMessageTimestamp :: LogMessage -> TimeStamp
+getLogMessageTimestamp (LogMessage _ ts _) = ts
+getLogMessageTimestamp (Unknown _ ) = error "No timestamp for Unknowns"
 
 -- Exercise 3
 build :: [LogMessage] -> MessageTree
