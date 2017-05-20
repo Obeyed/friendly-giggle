@@ -7,19 +7,62 @@ import Log
 
 -- Exercise 1
 
+--parse :: String -> [LogMessage]
+
+
+-- Third attempt
+-- avoid parenthesis by using the (.) and ($) operators
 parseMessage :: String -> LogMessage
-parseMessage ('I':' ':xs) = LogMessage Info ts msg
+parseMessage ('I':xs) = LogMessage Info ts msg
+  where ts  = read . head $ ws :: Int
+        msg = unwords . drop 1 $ ws
+        ws  = words xs
+parseMessage ('W':xs) = LogMessage Warning ts msg
+  where ts  = read . head $ ws :: Int
+        msg = unwords . drop 1 $ ws
+        ws  = words xs
+parseMessage ('E':xs) = LogMessage (Error lvl) ts msg
+  where lvl = read . head $ ws :: Int
+        ts  = read . head . drop 1 $ ws :: Int
+        msg = unwords . drop 2 $ ws
+        ws  = words xs
+parseMessage xs = Unknown xs
+
+
+-- Second attempt with only Prelude functions
+-- However, no dot operator
+parseMessage' :: String -> LogMessage
+parseMessage' ('I':xs) = LogMessage Info ts msg
+  where ts  = read (head ws) :: Int
+        msg = unwords $ drop 1 ws
+        ws  = words xs
+parseMessage' ('W':xs) = LogMessage Warning ts msg
+  where ts  = read (head ws) :: Int
+        msg = unwords $ drop 1 ws
+        ws  = words xs
+parseMessage' ('E':xs) = LogMessage (Error lvl) ts msg
+  where lvl = read (head ws) :: Int
+        ts  = read (head (drop 1 ws)) :: Int
+        msg = unwords $ drop 2 ws
+        ws  = words xs
+parseMessage' xs = Unknown xs
+
+-- First attempt:
+parseMessage'' :: String -> LogMessage
+parseMessage'' ('I':' ':xs) = LogMessage Info ts msg
   where ts  = read (getNextWord xs) :: Int
         msg = dropNextWord xs
-parseMessage ('W':' ':xs) = LogMessage Warning ts msg
+parseMessage'' ('W':' ':xs) = LogMessage Warning ts msg
   where ts  = read (getNextWord xs) :: Int
         msg = dropNextWord xs
-parseMessage ('E':' ':xs) = LogMessage (Error lvl) ts msg
+parseMessage'' ('E':' ':xs) = LogMessage (Error lvl) ts msg
   where lvl = read (getNextWord xs) :: Int
         ts  = read (getNextWord (dropNextWord xs)) :: Int
         msg = dropNextWord $ dropNextWord xs
-parseMessage xs = Unknown xs
+parseMessage'' xs = Unknown xs
 
+-- reinvented the wheel with the following
+-- will instead use lines,words,unwords,take,drop, and (.) -}
 getNextWord :: String -> String
 getNextWord []         = []
 getNextWord (x:" ")    = [x]
