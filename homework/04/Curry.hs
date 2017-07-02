@@ -88,3 +88,40 @@ showTree n@(Node depth _ _ _) = go depth n
   where go _ (Leaf) = ""
         go i (Node _ l c r) = go (i-1) l ++
             replicate (4*fromIntegral i) ' ' ++ show c ++ "\n" ++ go (i-1) r
+
+-- Exercise 3a
+{- Implement a function
+ -   xor :: [Bool] -> Bool
+ - which returns True if and only if there are an odd number of True
+ - values contained in the input list. It does not matter how many
+ - False values the input list contains. For example,
+ -   xor [False, True, False] == True
+ -   xor [False, True, False, False, True] == False
+ - Your solution must be implemented using a fold.
+ -}
+xor :: [Bool] -> Bool
+xor = foldl (\x acc -> if x then not acc else acc) False
+
+-- Exercise 3b
+{- Implement map as a fold. That is, complete the definition
+ -   map’ :: (a -> b) -> [a] -> [b]
+ -   map’ f = foldr ...
+ - in such a way that map’ behaves identically to the
+ - standard map function.
+ -}
+map' :: (a -> b) -> [a] -> [b]
+map' f = foldr (\x acc -> f x : acc) []
+
+-- Exercise 3c
+{- (Optional) Implement foldl using foldr. That is,
+ - complete the definition
+ -   myFoldl :: (a -> b -> a) -> a -> [b] -> a
+ -   myFoldl f base xs = foldr ...
+ - in such a way that myFoldl behaves identically to the standard
+ - foldl function.
+ - Hint: Study how the application of foldr and foldl work out:
+ -   foldr f z [x1, x2, ..., xn] == x1 ‘f‘ (x2 ‘f‘ ... (xn ‘f‘ z)...)
+ -   foldl f z [x1, x2, ..., xn] == (...((z ‘f‘ x1) ‘f‘ x2) ‘f‘...) ‘f‘ xn
+ -}
+myFoldl :: (a -> b -> a) -> a -> [b] -> a
+myFoldl f base xs = foldr ...
