@@ -89,6 +89,7 @@ showTree n@(Node depth _ _ _) = go depth n
         go i (Node _ l c r) = go (i-1) l ++
             replicate (4*fromIntegral i) ' ' ++ show c ++ "\n" ++ go (i-1) r
 
+
 -- Exercise 3a
 {- Implement a function
  -   xor :: [Bool] -> Bool
@@ -126,3 +127,12 @@ map' f = foldr (\x acc -> f x : acc) []
 -- https://wiki.haskell.org/Foldl_as_foldr
 myFoldl :: (a -> b -> a) -> a -> [b] -> a
 myFoldl f base xs = foldr (\b g x -> g (f x b)) id xs base
+
+
+-- Exercise 4
+{- Given an integer n, your function should
+ - generate all the odd prime numbers up to 2n + 2.
+ -}
+sieveSundaram :: Integer -> [Integer]
+sieveSundaram n = [2*x+1 | x <- [1..n], not (x `elem` nonPrimes)]
+  where nonPrimes = [i+j+2*i*j | i <- [1..n], j <- [i..n]]
