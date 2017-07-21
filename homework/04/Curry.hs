@@ -123,5 +123,6 @@ map' f = foldr (\x acc -> f x : acc) []
  -   foldr f z [x1, x2, ..., xn] == x1 ‘f‘ (x2 ‘f‘ ... (xn ‘f‘ z)...)
  -   foldl f z [x1, x2, ..., xn] == (...((z ‘f‘ x1) ‘f‘ x2) ‘f‘...) ‘f‘ xn
  -}
+-- https://wiki.haskell.org/Foldl_as_foldr
 myFoldl :: (a -> b -> a) -> a -> [b] -> a
-myFoldl f base xs = foldr ...
+myFoldl f base xs = foldr (\b g x -> g (f x b)) id xs base
